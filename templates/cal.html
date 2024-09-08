@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{  url_for('static', filename='cal.css')  }}">
+  <title>Energy consumption calculator</title>
+</head>
+<body>
+  <div id="container">
+    <img src="{{  url_for('static', filename='images/logo.png')}}" alt="Calculadora de consumo de energia">
+
+    <h1>We will reveal your consumption</h1>
+    <p><strong>Fill in the fields below correctly and we will tell you how much Rs per month your electro will consume.</strong></p>
+
+    <div id="inputs">
+      <input id="power" type="number" placeholder="Electricity power - EX: 60w">
+      <input id="totalHours" type="number" placeholder="How many hours of daily use" min="0.1" max="24" maxlength="2">
+      <input id="totalDays" type="number" placeholder="How many days of use per month?" min="1" max="30" maxlength="2">
+      <input id="price" type="text" placeholder="KWh price in energy paper">
+
+      <button id="calculate" onclick="consumptionCalculate()">Calculate Consumption</button>
+
+    </div>
+
+    <h3 id="response"></h3>
+  </div>
+
+</body>
+<script src="{{  url_for('static', filename='cal.js')  }}"></script>
+</html>

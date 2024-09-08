@@ -1,0 +1,31 @@
+Appliance,Power Consumption (W),Usage,Avg Monthly Energy Use (kWh),Avg Monthly Cost ($),Energy-Saving Tips
+Air Conditioner (AC),1500 - 2500,6-8 hours/day,180 - 600,20 - 60,"Set temp - 24-26°C, use ceiling fans"
+Induction Cook-p,1200 - 2100,1-2 hours/day,36 - 126,4 - 13,Use flat cookware
+Refrigera-r,100 - 800,Continuous,30 - 150,03 - 15,"Keep full but not crowded, set optimal temp"
+Washing Machine,400 - 1500,3-5 loads/week,10 - 50,01 - 05,Use cold water settings
+Microwave Oven,600 - 1200,15-30 mins/day,10 - 20,01 - 02,Avoid prolonged cooking
+Electric Kettle,1200 - 3000,10-15 mins/day,6 - 15,01 - 02,Boil only needed water
+Television (LED/LCD),30 - 150,3-5 hours/day,5 - 25,01 - 03,Use energy-saving settings
+Lap-p/Computer,50 - 150,4-8 hours/day,6 - 36,01 - 04,Use sleep mode
+Water Heater (Geyser),1500 - 3000,15-30 mins/day,20 - 90,03 - 10,Set lower temp
+Ceiling Fan,50 - 75,6-8 hours/day,,01 - 02,Use energy-efficient fans
+LED Bulbs,5 - 20,4-6 hours/day,- 04,0.10 - 0.50,Use LEDs
+Vacuum Cleaner,500 - 1500,1-2 hours/week,02 - 08,0.50 - 1,Empty dust bags regularly
+Dishwasher,1200 - 1500,1 load/day,30 - 45,03 - 05,Run full loads
+Hair Dryer,800 - 2000,10-20 mins/day,04 - 12,0.50 - 1.50,Use lower heat settings
+Clothes Iron,1000 - 1800,1-2 hours/week,04 - 12,0.50 - 1.50,Iron in batches
+-aster,800 - 1500,5-10 mins/day,2 - 4,0.25 - 0.50,Unplug after use
+Coffee Maker,800 - 1200,10-15 mins/day,3 - 6,0.30 - 0.75,Use thermal carafe
+Blender/Mixer Grinder,300 - 700,5-10 mins/day,01 - 03,0.10 - 0.30,Use only as needed
+Electric Oven,1000 - 5000,30-60 mins/day,30 - 90,03 - 10,Preheat only when needed
+Humidifier/Dehumidifier,300 - 700,4-8 hours/day,36 - 120,04 - 12,Set correct humidity
+Space Heater,1000 - 1500,2-4 hours/day,60 - 180,06 - 18,Use in small rooms
+Electric Blanket,100 - 200,6-8 hours/night,18 - 50,02 - 05,Set a timer
+Air Purifier,30 - 100,6-12 hours/day,05 - 36,0.50 - 4,Use when air quality is poor
+Electric Grill,800 - 1500,30-60 mins/session,04 - 10,0.50 - 1,Preheat only a few mins
+Bread Maker,500 - 800,3-4 hours/session,06 - 12,0.75 - 1.50,Use multiple loaves
+Slow Cooker (Crockpot),150 - 300,4-8 hours/session,10 - 30,01 - 03,Use for bulk cooking
+Electric Fireplace,1000 - 1500,2-4 hours/day,60 - 180,06 - 18,Use in small rooms
+Food Processor,300 - 1000,10-20 mins/session,01 - 03,0.10 - 0.30,Use only when needed
+Deep Fryer,1000 - 1800,30-60 mins/session,10 - 20,01 - 02,Heat only needed oil
+Treadmill,600 - 700,30-60 mins/day,10 - 20,01 - 02,Turn off completely after use

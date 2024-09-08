@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appliance Standard Usage Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stdus.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Appliance Standard Usage Checker</h1>
+        <form id="applianceForm">
+            <div id="inputContainer">
+                <div class="input-group">
+                    <label for="applianceName">Select Appliance:</label>
+                    <select class="applianceName" required>
+                        <option value="" disabled selected>Select an Appliance</option>
+                        <!-- Options will be added by JavaScript -->
+                    </select>
+                    <div class="appliance-details"></div>
+                </div>
+            </div>
+            <button type="button" id="addMore" class="btn add-btn">Add More Appliances</button>
+            <button type="submit" class="btn submit-btn">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Appliance data extracted from the CSV
+        const applianceData = {
+            "air conditioner": {
+                power: "1500 - 2500 W",
+                usage: "6-8 hours/day",
+                energyUse: "180 - 600 kWh",
+                cost: "₹1660 - ₹4980",
+                tips: "Set temperature to 24-26°C, use ceiling fans."
+            },
+            "induction cooktop": {
+                power: "1200 - 2100 W",
+                usage: "1-2 hours/day",
+                energyUse: "36 - 126 kWh",
+                cost: "₹332 - ₹1079",
+                tips: "Use flat cookware for better efficiency."
+            },
+            "refrigerator": {
+                power: "100 - 800 W",
+                usage: "Continuous",
+                energyUse: "30 - 150 kWh",
+                cost: "₹249 - ₹1245",
+                tips: "Keep it full but not crowded, set the optimal temperature."
+            },
+            "washing machine": {
+                power: "400 - 1500 W",
+                usage: "3-5 loads/week",
+                energyUse: "10 - 50 kWh",
+                cost: "₹83 - ₹415",
+                tips: "Use cold water settings and full loads."
+            },
+            "microwave oven": {
+                power: "600 - 1200 W",
+                usage: "15-30 mins/day",
+                energyUse: "10 - 20 kWh",
+                cost: "₹83 - ₹166",
+                tips: "Avoid prolonged cooking, use appropriate settings."
+            },
+            "dishwasher": {
+                power: "1200 - 1500 W",
+                usage: "3-4 loads/week",
+                energyUse: "15 - 30 kWh",
+                cost: "₹166 - ₹332",
+                tips: "Run full loads, use eco settings."
+            },
+            "television": {
+                power: "50 - 200 W",
+                usage: "3-5 hours/day",
+                energyUse: "5 - 30 kWh",
+                cost: "₹41 - ₹249",
+                tips: "Turn off when not in use, adjust brightness."
+            },
+            "ceiling fan": {
+                power: "60 - 80 W",
+                usage: "6-12 hours/day",
+                energyUse: "10 - 30 kWh",
+                cost: "₹83 - ₹249",
+                tips: "Use with air conditioning for energy savings."
+            },
+            "water heater": {
+                power: "2000 - 4000 W",
+                usage: "1-2 hours/day",
+                energyUse: "60 - 120 kWh",
+                cost: "₹498 - ₹996",
+                tips: "Set temperature to 120°F, insulate water heater."
+            },
+            "electric kettle": {
+                power: "1500 - 1800 W",
+                usage: "10-20 mins/day",
+                energyUse: "3 - 6 kWh",
+                cost: "₹25 - ₹50",
+                tips: "Boil only the amount needed."
+            },
+            "coffee maker": {
+                power: "800 - 1200 W",
+                usage: "10-20 mins/day",
+                energyUse: "3 - 5 kWh",
+                cost: "₹25 - ₹41",
+                tips: "Turn off immediately after use."
+            },
+            "vacuum cleaner": {
+                power: "500 - 1500 W",
+                usage: "1-2 hours/week",
+                energyUse: "2 - 5 kWh",
+                cost: "₹17 - ₹41",
+                tips: "Clean filters regularly."
+            },
+            "iron": {
+                power: "1000 - 1800 W",
+                usage: "1-2 hours/week",
+                energyUse: "5 - 10 kWh",
+                cost: "₹41 - ₹83",
+                tips: "Iron clothes in batches."
+            },
+            "hair dryer": {
+                power: "800 - 1800 W",
+                usage: "10-15 mins/day",
+                energyUse: "4 - 6 kWh",
+                cost: "₹33 - ₹50",
+                tips: "Use moderate settings."
+            },
+            "toaster": {
+                power: "800 - 1500 W",
+                usage: "10-20 mins/day",
+                energyUse: "3 - 5 kWh",
+                cost: "₹25 - ₹41",
+                tips: "Use only when necessary."
+            },
+            "space heater": {
+                power: "1500 - 3000 W",
+                usage: "2-4 hours/day",
+                energyUse: "60 - 120 kWh",
+                cost: "₹498 - ₹996",
+                tips: "Use only when necessary, close doors to trap heat."
+            },
+            "oven": {
+                power: "1000 - 5000 W",
+                usage: "1-2 hours/day",
+                energyUse: "30 - 100 kWh",
+                cost: "₹249 - ₹830",
+                tips: "Preheat only when needed, keep the door closed."
+            },
+            "electric stove": {
+                power: "1200 - 3000 W",
+                usage: "1-2 hours/day",
+                energyUse: "36 - 60 kWh",
+                cost: "₹299 - ₹498",
+                tips: "Use appropriate size pots."
+            },
+            "computer": {
+                power: "50 - 250 W",
+                usage: "6-8 hours/day",
+                energyUse: "9 - 60 kWh",
+                cost: "₹75 - ₹498",
+                tips: "Set to sleep mode when not in use."
+            }
+        };
+        
+
+// Function to display appliance details when selected
+function displayApplianceDetails(applianceName, container) {
+    const appliance = applianceData[applianceName];
+    if (appliance) {
+        container.innerHTML = `
+            <p><strong>Power Consumption:</strong> ${appliance.power}</p>
+            <p><strong>Usage:</strong> ${appliance.usage}</p>
+            <p><strong>Avg Monthly Energy Use:</strong> ${appliance.energyUse}</p>
+            <p><strong>Avg Monthly Cost:</strong> ${appliance.cost}</p>
+            <p><strong>Energy-Saving Tips:</strong> ${appliance.tips}</p>
+        `;
+    } else {
+        container.innerHTML = `<p>No details available for this appliance.</p>`;
+    }
+}
+
+// Function to populate the dropdown with appliances
+function populateApplianceDropdown(dropdown) {
+    Object.keys(applianceData).forEach(appliance => {
+        const option = document.createElement('option');
+        option.value = appliance;
+        option.textContent = appliance.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        dropdown.appendChild(option);
+    });
+}
+
+// Create a dropdown with appliance options and add event listener
+function createApplianceDropdown() {
+    const select = document.createElement('select');
+    select.classList.add('applianceName');
+    select.required = true;
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "Select an Appliance";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    select.appendChild(defaultOption);
+
+    populateApplianceDropdown(select);
+
+    const detailsContainer = document.createElement('div');
+    detailsContainer.classList.add('appliance-details');
+
+    select.addEventListener('change', function () {
+        displayApplianceDetails(select.value, detailsContainer);
+    });
+
+    return { select, detailsContainer };
+}
+
+// Event listener to add more appliance dropdowns
+document.getElementById('addMore').addEventListener('click', function () {
+    const { select, detailsContainer } = createApplianceDropdown();
+    const inputGroup = document.createElement('div');
+    inputGroup.classList.add('input-group');
+    inputGroup.innerHTML = `<label>Select Appliance:</label>`;
+    inputGroup.appendChild(select);
+    inputGroup.appendChild(detailsContainer);
+    document.getElementById('inputContainer').appendChild(inputGroup);
+});
+
+// Initialize the first dropdown
+document.addEventListener('DOMContentLoaded', () => {
+    const initialDropdown = document.querySelector('.applianceName');
+    populateApplianceDropdown(initialDropdown);
+    initialDropdown.addEventListener('change', function () {
+        const detailsContainer = initialDropdown.nextElementSibling;
+        displayApplianceDetails(initialDropdown.value, detailsContainer);
+    });
+});
+
+    </script>
+</body>
+</html>

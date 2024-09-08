@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appliance Usage Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: left;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .appliance-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .appliance-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .appliance-item input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .appliance-item input:focus {
+            border-color: #4CAF50;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff6f61;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .remove-btn:hover {
+            color: #d32f2f;
+        }
+
+        .add-appliance-btn, .submit-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 16px;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+        }
+
+        .add-appliance-btn {
+            background: linear-gradient(45deg, #66bb6a, #43a047);
+        }
+
+        .add-appliance-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(67, 160, 71, 0.4);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #42a5f5, #1e88e5);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(30, 136, 229, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Appliance Usage Tracker</h2>
+        <form class="appliance-form" id="applianceForm">
+            <div class="appliance-item">
+                <input type="text" name="applianceName[]" placeholder="Appliance Name" required>
+                <input type="number" name="usageTime[]" placeholder="Usage Time (hours)" min="0" step="0.1" required>
+                <input type="number" name="wattage[]" placeholder="Wattage (W)" min="0" required>
+                <button class="remove-btn" title="Remove Appliance" type="button">&times;</button>
+            </div>
+            <button type="button" class="add-appliance-btn">Add Another Appliance</button>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const applianceForm = document.getElementById('applianceForm');
+
+        // Add a new appliance form item
+        document.querySelector('.add-appliance-btn').addEventListener('click', () => {
+            const newItem = document.createElement('div');
+            newItem.classList.add('appliance-item');
+            newItem.innerHTML = `
+                <input type="text" name="applianceName[]" placeholder="Appliance Name" required>
+                <input type="number" name="usageTime[]" placeholder="Usage Time (hours)" min="0" step="0.1" required>
+                <input type="number" name="wattage[]" placeholder="Wattage (W)" min="0" required>
+                <button class="remove-btn" title="Remove Appliance" type="button">&times;</button>
+            `;
+            applianceForm.insertBefore(newItem, applianceForm.querySelector('.add-appliance-btn'));
+
+            newItem.querySelector('.remove-btn').addEventListener('click', () => {
+                newItem.remove();
+            });
+        });
+
+        // Handle form submission
+        applianceForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(applianceForm);
+            const appliances = [];
+            for (let i = 0; i < formData.getAll('applianceName[]').length; i++) {
+                appliances.push({
+                    name: formData.getAll('applianceName[]')[i],
+                    usageTime: formData.getAll('usageTime[]')[i],
+                    wattage: formData.getAll('wattage[]')[i],
+                });
+            }
+
+            // Send data to the server
+            fetch('/save-appliances', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(appliances),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving the data.');
+            });
+
+            applianceForm.reset();
+            document.querySelectorAll('.appliance-item').forEach((item, index) => {
+                if (index > 0) item.remove();
+            });
+        });
+    </script>
+
+</body>
+</html>
